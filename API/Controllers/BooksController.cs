@@ -4,24 +4,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
+using GoodreadsCloneAPI.Services;
+using GoodreadsCloneAPI.Models;
+using Microsoft.AspNet.OData;
+
 namespace GoodreadsCloneAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private readonly IBookService _bookService;
+
+        public BooksController(IBookService bookService)
+        {
+            _bookService = bookService;
+        }
+
         // GET api/books
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        [EnableQuery()]
+        public List<Book> Get()
         {
-            return new string[] { "Book1", "Book2" };
+            return _bookService.GetBooks();
         }
 
         // GET api/books/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public Book Get(int id)
         {
-            return string.Format("Book {0}", id);
+            return _bookService.GetById(id);
         }
 
         // POST api/books
