@@ -11,7 +11,7 @@ CREATE TABLE Book (
     id INT IDENTITY(1, 1),
     title VARCHAR (MAX) NOT NULL,
     authors VARCHAR (MAX) NOT NULL,
-    average_rating DECIMAL (3, 2) NOT NULL DEFAULT 0,
+    average_rating DECIMAL (3, 2) NOT NULL CHECK (average_rating >= 0 AND average_rating <= 5),
     isbn VARCHAR(13) NOT NULL,
     num_pages SMALLINT,
     ratings_count INT NOT NULL DEFAULT 0,

@@ -1,8 +1,9 @@
 ﻿using System;
+using GoodreadsCloneAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace GoodreadsCloneAPI.Models
+namespace GoodreadsCloneAPI.Persistence
 {
     public partial class GoodreadsCloneContext : DbContext, IGoodreadsCloneContext
     {

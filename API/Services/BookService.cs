@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GoodreadsCloneAPI.Models;
+using GoodreadsCloneAPI.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoodreadsCloneAPI.Services 
 {
-    public class BookService : IBookService
+    public class BookService : IBaseService<Book>
     {
 
         private readonly IGoodreadsCloneContext _context;
@@ -15,7 +17,7 @@ namespace GoodreadsCloneAPI.Services
             _context = context;
         }
 
-        public List<Book> GetBooks()
+        public List<Book> Get()
         {
             var books = _context.Book.AsNoTracking().ToList();
 
@@ -29,11 +31,27 @@ namespace GoodreadsCloneAPI.Services
             return book;
         }
 
-        public Book GetBookByISBN(string isbn)
+        public void Create(Book book)
         {
-            var book = _context.Book.AsNoTracking().FirstOrDefault(b => b.Isbn == isbn);
-            
-            return book;
+            _context.Add(book);
+            _context.SaveChanges();
+        }
+
+        public void Delete (int id)
+        {
+            Book book = _context.Book.FirstOrDefault(b => b.Id == id);
+            if(book != null)
+            {
+                _context.Book.Attach(book);
+                _context.Book.Remove(book);
+                _context.SaveChanges();
+            }
+        }
+
+        public void Update(Book book)
+        {
+            _context.Book.Update(book);
+            _context.SaveChanges();
         }
     }
 

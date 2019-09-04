@@ -16,6 +16,10 @@ using GoodreadsCloneAPI.Models;
 using GoodreadsCloneAPI.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNet.OData.Extensions;
+using GoodreadsCloneAPI.Persistence;
+using Microsoft.AspNetCore.Diagnostics;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace GoodreadsCloneAPI
 {
@@ -40,7 +44,7 @@ namespace GoodreadsCloneAPI
             // Register the service and implementation for the database context
             services.AddScoped<IGoodreadsCloneContext>(provider => provider.GetService<GoodreadsCloneContext>());
 
-            services.AddScoped<IBookService,BookService>();
+            services.AddScoped<IBaseService<Book>, BookService>();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -61,6 +65,17 @@ namespace GoodreadsCloneAPI
             }
 
             app.UseHttpsRedirection();
+            
+            app.UseExceptionHandler(a => a.Run(async context =>
+            {
+                var feature = context.Features.Get<IExceptionHandlerPathFeature>();
+                var exception = feature.Error;
+
+                var result = JsonConvert.SerializeObject(new { error = exception.Message });
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(result);
+            }));
+
             app.UseMvc(routerBuilder => 
             {
                 routerBuilder.EnableDependencyInjection();

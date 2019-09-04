@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using GoodreadsCloneAPI.Services;
 using GoodreadsCloneAPI.Models;
 using Microsoft.AspNet.OData;
+using GoodreadsCloneAPI.Extensions;
 
 namespace GoodreadsCloneAPI.Controllers
 {
@@ -15,9 +16,9 @@ namespace GoodreadsCloneAPI.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IBookService _bookService;
+        private readonly IBaseService<Book> _bookService;
 
-        public BooksController(IBookService bookService)
+        public BooksController(IBaseService<Book> bookService)
         {
             _bookService = bookService;
         }
@@ -27,7 +28,7 @@ namespace GoodreadsCloneAPI.Controllers
         [EnableQuery()]
         public List<Book> Get()
         {
-            return _bookService.GetBooks();
+            return _bookService.Get();
         }
 
         // GET api/books/5
@@ -39,20 +40,31 @@ namespace GoodreadsCloneAPI.Controllers
 
         // POST api/books
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Book book)
         {
+            if(ModelState.IsValid)
+            {
+                _bookService.Create(book);
+            }
         }
 
         // PUT api/books/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Book book)
         {
+
+            if(ModelState.IsValid)
+            {
+                book.Id = id;
+                _bookService.Update(book);
+            }
         }
 
         // DELETE api/books/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _bookService.Delete(id);
         }
     }
 }
