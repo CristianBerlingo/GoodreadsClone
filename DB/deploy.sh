@@ -13,23 +13,30 @@ docker run -d --name grc_sql_server -p 1433:1433 goodreadsclone/sql_server
 echo "##########################################################################################"
 
 # Wait for caution
-echo "Precaution waiting for container"
+echo "Wait for caution"
 echo "sleep 30s"
 sleep 30s
 
 echo "##########################################################################################"
 
 # Creation Book table
-echo "Creation Book table"
-echo "docker exec -it /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Piazzolla2019 -d master -i setup.sql"
-docker exec -it grc_sql_server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Piazzolla2019 -d master -i setup.sql
+echo "Creation database structure"
+echo "docker exec -it /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Piazzolla2019 -d master -i setup_ddl.sql"
+docker exec -it grc_sql_server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Piazzolla2019 -d master -i setup_ddl.sql
 
 echo "##########################################################################################"
 
-# Populate Book
-echo "Populate Book"
+# Populate Book table
+echo "Populate Book table"
 echo "docker exec -it grc_sql_server python3 import_initial_data.py"
-docker exec -it grc_sql_server python3 import_initial_data.py
+docker exec -it grc_sql_server python3 import_initial_book_data.py
+
+echo "##########################################################################################"
+
+# Populate remain tables
+echo "Populate remain tables"
+echo "docker exec -it /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Piazzolla2019 -d master -i setup_dml.sql"
+docker exec -it grc_sql_server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Piazzolla2019 -d GoodreadsClone -i setup_dml.sql
 
 echo "##########################################################################################"
 
