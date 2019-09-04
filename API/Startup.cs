@@ -45,6 +45,7 @@ namespace GoodreadsCloneAPI
             services.AddScoped<IGoodreadsCloneContext>(provider => provider.GetService<GoodreadsCloneContext>());
 
             services.AddScoped<IBaseService<Book>, BookService>();
+            services.AddScoped<IBaseService<Bookshelf>, BookshelfService>();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
