@@ -61,10 +61,8 @@ namespace GoodreadsCloneAPI.Controllers
         }
 
         // DELETE api/books/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            _bookService.Delete(id);
-        }
+        // [HttpDelete("{id}")]
+        // public void Delete(int id)
+        // Delete books is unavailable, one time a book is added this can't be deleted
     }
 }

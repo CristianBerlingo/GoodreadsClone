@@ -39,13 +39,7 @@ namespace GoodreadsCloneAPI.Services
 
         public void Delete (int id)
         {
-            Book book = _context.Book.FirstOrDefault(b => b.Id == id);
-            if(book != null)
-            {
-                _context.Book.Attach(book);
-                _context.Book.Remove(book);
-                _context.SaveChanges();
-            }
+            // Delete books is unavailable, one time a book is added this can't be deleted
         }
 
         public void Update(Book book)

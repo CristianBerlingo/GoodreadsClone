@@ -52,5 +52,12 @@ namespace GoodreadsCloneAPI.Controllers
                 _bookshelfService.Update(bookshelf);
             }
         }
+
+        // DELETE api/bookshelf/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            _bookshelfService.Delete(id);
+        }
     }
 }

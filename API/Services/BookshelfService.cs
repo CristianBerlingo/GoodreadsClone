@@ -24,9 +24,11 @@ namespace GoodreadsCloneAPI.Services
 
         public void Delete(int id)
         {
-            Bookshelf bookshelf = _context.Bookshelf.FirstOrDefault(b => b.Id == id);
+            Bookshelf bookshelf = _context.Bookshelf.Include(bs => bs.BookshelfBook).FirstOrDefault(b => b.Id == id);
             if(bookshelf != null)
             {
+                _context.BookshelfBook.RemoveRange(bookshelf.BookshelfBook);
+
                 _context.Bookshelf.Attach(bookshelf);
                 _context.Bookshelf.Remove(bookshelf);
                 _context.SaveChanges();

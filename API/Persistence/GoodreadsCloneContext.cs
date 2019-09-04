@@ -157,6 +157,7 @@ namespace GoodreadsCloneAPI.Persistence
                     .HasColumnName("last_name")
                     .HasMaxLength(200)
                     .IsUnicode(false);
+
             });
         }
     }
