@@ -9,8 +9,6 @@ RUN pip3 install --no-cache-dir pyodbc
 
 COPY ./res .
 
-EXPOSE 1433
-
 ENV ACCEPT_EULA="Y"
 ENV SA_PASSWORD="Piazzolla2019"
 

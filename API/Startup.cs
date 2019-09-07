@@ -67,7 +67,8 @@ namespace GoodreadsCloneAPI
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // For docker
+            // app.UseHttpsRedirection();
             
             app.UseExceptionHandler(a => a.Run(async context =>
             {

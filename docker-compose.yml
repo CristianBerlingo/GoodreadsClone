@@ -1,0 +1,28 @@
+version: '3'
+services:
+  grc_api:
+    image: goodreadsclone/api
+    build:
+      context: ./API
+    depends_on:
+      - grc_sql_server
+    networks: 
+      - net
+        # ipv4_address: 172.19.0.3
+    ports:
+      - "5000:80"
+      - "5001:443"
+  
+  grc_sql_server:
+    image: goodreadsclone/sql_server
+    build:
+      context: ./DB
+    networks: 
+      - net
+        # ipv4_address: 172.19.0.2
+    ports:
+      - "1433:1433"
+
+networks:
+  net:
+    driver: bridge
