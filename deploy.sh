@@ -1,21 +1,26 @@
 echo "##########################################################################################"
 echo "Deleting older publish folder"
+echo "rm -r API/publish"
 rm -r API/publish
 
 echo "##########################################################################################"
 echo "Executing dotnet publish"
+echo "dotnet publish -c Release -f netcoreapp2.1 -o ./publish/release API/GoodreadsCloneAPI.csproj"
 dotnet publish -c Release -f netcoreapp2.1 -o ./publish/release API/GoodreadsCloneAPI.csproj
 
 echo "##########################################################################################"
 echo "Deleting older containers"
+echo "docker rm --force grc_api grc_sql_server"
 docker rm --force grc_api grc_sql_server
 
 echo "##########################################################################################"
 echo "Deleting older images"
+echo "docker image rm --force goodreadsclone/api goodreadsclone/sql_server"
 docker image rm --force goodreadsclone/api goodreadsclone/sql_server
 
 echo "##########################################################################################"
 echo "Compose containers"
+echo "docker-compose up -d --force-recreate"
 docker-compose up -d --force-recreate
 
 echo "##########################################################################################"
